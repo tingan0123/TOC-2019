@@ -1,9 +1,9 @@
 from bottle import route, run, request, abort, static_file
-
+#import utils
 from fsm import TocMachine
 
 
-VERIFY_TOKEN = "test"
+VERIFY_TOKEN = "verify_test"
 machine = TocMachine(
     states=[
         'user',
@@ -29,40 +29,40 @@ machine = TocMachine(
             'conditions': 'is_going_to_state2'
         },
         {
-            'trigger' : 'advance',
-            'source' : 'user',
-            'dest' : 'state3',
-            'conditions' : 'is_going_to_state3'
+            'trigger': 'advance',
+            'source': 'user',
+            'dest': 'state3',
+            'conditions': 'is_going_to_state3'
         },
         {
-            'trigger' : 'advance',
-            'source' : 'state0',
-            'dest' : 'state1',
-            'conditions' : 'is_going_to_state1'
+            'trigger': 'advance',
+            'source': 'state0',
+            'dest': 'state1',
+            'conditions': 'is_going_to_state1'
         },
         {
-            'trigger' : 'advance',
-            'source' : 'state3',
-            'dest' : 'state6',
-            'conditions' : 'is_going_to_state6'
+            'trigger': 'advance',
+            'source': 'state1',
+            'dest': 'state4',
+            'conditions': 'is_going_to_state4'
         },
         {
-            'trigger' : 'advance',
-            'source' : 'state1',
-            'dest' : 'state4',
-            'conditions' : 'is_going_to_state4'
+            'trigger': 'advance',
+            'source': 'state4',
+            'dest': 'state5',
+            'conditions': 'is_going_to_state5'
         },
         {
-            'trigger' : 'advance',
-            'source' : 'state4',
-            'dest' : 'state5',
-            'conditions' : 'is_going_to_state5'
+            'trigger': 'advance',
+            'source': 'state2',
+            'dest': 'state5',
+            'conditions': 'is_going_to_state5'
         },
         {
-            'trigger' : 'advance',
-            'source' : 'state2',
-            'dest' : 'state5',
-            'conditions' : 'is_going_to_state5'
+            'trigger': 'advance',
+            'source': 'state3',
+            'dest': 'state6',
+            'conditions': 'is_going_to_state6'
         },
         {
             'trigger': 'go_back',
@@ -108,7 +108,9 @@ def webhook_handler():
     if body['object'] == "page":
         event = body['entry'][0]['messaging'][0]
         machine.advance(event)
+        
         return 'OK'
+        
 
 
 @route('/show-fsm', methods=['GET'])
@@ -119,4 +121,5 @@ def show_fsm():
 
 if __name__ == "__main__":
     show_fsm()
-    run(host="localhost", port=5000, debug=True, reloader=True)
+    run(host="localhost", port=1248, debug=True, reloader=True)
+    
